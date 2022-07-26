@@ -1,0 +1,97 @@
+---
+title: "FOMC Announcements and HIGH FREQ CHART of DOW index"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(quantmod)
+library(xts)
+library(dygraphs)
+## Request r package already installed 
+library(xts)
+library(tidyverse)
+library(stargazer)
+library(xts)
+library(lubridate)
+library(tseries)
+library("nlme")
+```
+
+
+
+
+```{r, include=FALSE}
+URL="https://www.dropbox.com/s/us5piieq6l5tcku/DJI_1min.txt?dl=1"
+X<-read.csv(URL,header = FALSE,sep = ",")
+names(X)[1]<-"Date"
+names(X)[2]<-"Open"
+names(X)[3]<-"High"
+names(X)[4]<-"Low"
+names(X)[5]<-"Close"
+names(X)[6]<-"Volume"
+
+X$YEAR<-as.numeric(substr(X$Date,1,4))
+X$MONTH<-as.numeric(substr(X$Date,6,7))
+X$DAY<-as.numeric(substr(X$Date,9,10))
+X$HOUR<-as.numeric(substr(X$Date,12,13))
+X$MINUTE<-as.numeric(substr(X$Date,15,16))
+X$D<-make_datetime(X$YEAR,X$MONTH,X$DAY,X$HOUR,X$MINUTE)
+datetimes <-as.POSIXct(X$D, tz="GMT")
+test=xts(X[,2:5],order.by = datetimes, tz="GMT")
+
+
+```
+
+
+# 2022-01-26
+
+```{r}
+tt=test["2022-01-26 09:30:00/2022-01-26 16:30:00"]
+dygraph(tt) %>%
+  dyOptions(labelsUTC = TRUE)%>%
+  dyCandlestick()%>%
+  dyEvent("2022-01-26 14:00:00", "FOMC", labelLoc = "bottom") %>%
+  dyRangeSelector()
+
+
+```
+
+# 2022-03-16
+
+```{r}
+tt=test["2022-03-16 09:30:00/2022-03-16 16:30:00"]
+dygraph(tt) %>%
+  dyOptions(labelsUTC = TRUE)%>%
+  dyCandlestick()%>%
+  dyEvent("2022-03-16 14:00:00", "FOMC", labelLoc = "bottom") %>%
+  dyRangeSelector()
+
+```
+
+
+# 2022-05-04
+
+```{r}
+tt=test["2022-05-04 09:30:00/2022-05-04 16:30:00"]
+dygraph(tt) %>%
+  dyOptions(labelsUTC = TRUE)%>%
+  dyCandlestick()%>%
+  dyEvent("2022-05-04 14:00:00", "FOMC", labelLoc = "bottom") %>%
+  dyRangeSelector()
+```
+
+# 2022-06-15
+
+```{r}
+ tt=test["2022-06-15 09:30:00/2022-06-15 16:30:00"]
+  dygraph(tt) %>%
+    dyOptions(labelsUTC = TRUE)%>%
+    dyCandlestick()%>%
+    dyEvent("2022-06-15 14:00:00", "FOMC", labelLoc = "bottom") %>%
+    dyRangeSelector()
+```
+
